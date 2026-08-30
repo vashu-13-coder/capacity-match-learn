@@ -56,16 +56,16 @@ function Contact() {
     <MarketingPage title="Contact our team" intro="Tell us about your training program and we'll map a rollout plan.">
       <div className="mx-auto max-w-xl px-4 py-16">
         <form onSubmit={onSubmit} noValidate className="card-elevated space-y-4 p-6">
-          <Field id="name" label="Full name" error={errors.name}>
+          <Field id="name" label="Full name" error={errors["name"]}>
             <Input id="name" name="name" maxLength={100} autoComplete="name" required />
           </Field>
-          <Field id="email" label="Work email" error={errors.email}>
+          <Field id="email" label="Work email" error={errors["email"]}>
             <Input id="email" name="email" type="email" maxLength={255} autoComplete="email" required />
           </Field>
-          <Field id="company" label="Company" error={errors.company}>
+          <Field id="company" label="Company" error={errors["company"]}>
             <Input id="company" name="company" maxLength={120} autoComplete="organization" required />
           </Field>
-          <Field id="message" label="How can we help?" error={errors.message}>
+          <Field id="message" label="How can we help?" error={errors["message"]}>
             <Textarea id="message" name="message" rows={5} maxLength={1000} required />
           </Field>
           <Button type="submit" className="w-full">
@@ -85,7 +85,7 @@ function Field({
 }: {
   id: string;
   label: string;
-  error?: string;
+  error?: string | undefined;
   children: React.ReactNode;
 }) {
   return (
