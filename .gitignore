@@ -16,6 +16,12 @@ dist-ssr
 .nitro
 *.local
 
+# Python & SQLite
+__pycache__/
+*.pyc
+instance/
+*.db
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

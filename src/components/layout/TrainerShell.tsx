@@ -2,43 +2,42 @@ import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   LayoutDashboard,
-  Users,
   BookOpen,
-  Sparkles,
-  Megaphone,
-  CreditCard,
-  ScrollText,
+  FileQuestion,
+  FolderKanban,
+  Users,
+  UserCheck,
   Bell,
   Menu,
   GraduationCap,
   LogOut,
+  Briefcase,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { organization } from "@/lib/mock-data";
+import { currentTrainerProfile, organization } from "@/lib/mock-data";
 import { RoleSwitcher } from "./RoleSwitcher";
 
 const NAV = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/users", label: "Users & Approvals", icon: Users },
-  { to: "/admin/courses", label: "Course Management", icon: BookOpen },
-  { to: "/admin/competency", label: "Competency Mapping", icon: Sparkles },
-  { to: "/admin/announcements", label: "Announcements", icon: Megaphone },
-  { to: "/admin/billing", label: "Subscription", icon: CreditCard },
-  { to: "/admin/audit", label: "Audit Logs", icon: ScrollText },
+  { to: "/trainer", label: "Trainer Dashboard", icon: LayoutDashboard },
+  { to: "/trainer/courses", label: "Assigned Courses", icon: BookOpen },
+  { to: "/trainer/questionnaires", label: "MCQ Builder", icon: FileQuestion },
+  { to: "/trainer/library", label: "Content Library", icon: FolderKanban },
+  { to: "/trainer/trainees", label: "Trainee Performance", icon: Users },
+  { to: "/trainer/profile", label: "Competency Profile", icon: UserCheck },
 ] as const;
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav aria-label="Admin" className="flex flex-col gap-1 p-3">
+    <nav aria-label="Trainer" className="flex flex-col gap-1 p-3">
       {NAV.map(({ to, label, icon: Icon }) => (
         <Link
           key={to}
           to={to}
           onClick={onNavigate}
-          activeOptions={{ exact: to === "/admin" }}
-          activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-medium" }}
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          activeOptions={{ exact: to === "/trainer" }}
+          activeProps={{ className: "bg-sky-50 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300 font-medium" }}
+          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sky-50 hover:text-sky-700 dark:hover:bg-sky-950/30"
         >
           <Icon className="size-4 shrink-0" aria-hidden />
           {label}
@@ -48,8 +47,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-/** Authenticated admin layout: fixed sidebar + top bar. */
-export function AdminShell({
+/** Trainer layout shell: sidebar + topbar + role switcher. */
+export function TrainerShell({
   title,
   description,
   actions,
@@ -64,23 +63,23 @@ export function AdminShell({
 
   return (
     <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
-        <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-5 font-semibold">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-amber-500 text-white">
-            <GraduationCap className="size-4" aria-hidden />
+      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-sidebar lg:flex">
+        <div className="flex h-16 items-center gap-2 border-b border-border px-5 font-semibold">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-sky-600 text-white">
+            <Briefcase className="size-4" aria-hidden />
           </span>
           <div>
             <div className="text-sm font-semibold leading-tight">CapacityConnect</div>
-            <div className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider">Admin Workspace</div>
+            <div className="text-[10px] text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider">Trainer Portal</div>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
           <NavList />
         </div>
-        <div className="border-t border-sidebar-border p-4">
-          <p className="text-xs text-muted-foreground">Organization</p>
-          <p className="truncate text-sm font-medium">{organization.name}</p>
-          <p className="mt-1 text-xs text-muted-foreground">{organization.tier} plan</p>
+        <div className="border-t border-border p-4">
+          <p className="text-xs text-muted-foreground">Logged in as Trainer</p>
+          <p className="truncate text-sm font-medium">{currentTrainerProfile.name}</p>
+          <p className="mt-0.5 truncate text-xs text-muted-foreground">{organization.name}</p>
         </div>
       </aside>
 
@@ -93,7 +92,7 @@ export function AdminShell({
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-72 p-0">
-              <SheetTitle className="flex h-16 items-center px-5 text-base">CapacityConnect</SheetTitle>
+              <SheetTitle className="flex h-16 items-center px-5 text-base">CapacityConnect Trainer</SheetTitle>
               <NavList onNavigate={() => setMobileOpen(false)} />
             </SheetContent>
           </Sheet>
@@ -102,11 +101,11 @@ export function AdminShell({
             <p className="truncate text-sm font-medium">{title}</p>
           </div>
 
-          <RoleSwitcher currentRole="admin" />
+          <RoleSwitcher currentRole="trainer" />
 
           <Button variant="ghost" size="icon" aria-label="Notifications" className="relative">
             <Bell className="size-5" />
-            <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-destructive" />
+            <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-sky-500" />
           </Button>
           <Button asChild variant="ghost" size="icon" aria-label="Sign out">
             <Link to="/login">

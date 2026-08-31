@@ -41,7 +41,7 @@ export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
 });
 
-const PIE_COLORS = ["var(--color-success)", "var(--color-destructive)", "var(--color-warning)"];
+const PIE_COLORS = ["#10b981", "#ef4444", "#f59e0b"];
 
 function AdminDashboard() {
   const pending = users.filter((u) => u.status === "pending").length;
